@@ -8,13 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Free up RAM with Swap
-        run: |
-          sudo fallocate -l 8G /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
-
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
