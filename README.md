@@ -72,3 +72,4 @@ Wan2.1 video generation works end to end.
 - `plugins/` — durable Expo prebuild configuration
 - `modules/` — Saient native Android/iOS modules
 - `engine/arm64-v8a/` — Saient's bundled Quartz ARM64 runtime
+ 
