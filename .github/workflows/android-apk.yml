@@ -55,9 +55,10 @@ jobs:
         working-directory: ./android
         env:
           NODE_ENV: production
+          SAIENT_ALLOW_DEBUG_RELEASE: "true"
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
+          ./gradlew assembleRelease -PSAIENT_ALLOW_DEBUG_RELEASE=true --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
 
       - uses: actions/upload-artifact@v4
         with:
