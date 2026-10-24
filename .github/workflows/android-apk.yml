@@ -82,7 +82,7 @@ jobs:
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug -x bundleDebugJsAndAssets -x createBundleDebugJsAndAssets --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
+          ./gradlew assembleDebug -x createBundleDebugJsAndAssets --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
 
       - uses: actions/upload-artifact@v4
         with:
