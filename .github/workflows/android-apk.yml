@@ -51,40 +51,15 @@ jobs:
           CI: "1"
         run: npx expo prebuild --platform android --no-install
 
-      - name: Embed Standalone JS Bundle into Android Assets
-        run: |
-          mkdir -p android/app/src/main/assets
-          mkdir -p android/app/src/main/res
-          npx expo export:embed \
-            --platform android \
-            --dev false \
-            --entry-file "$(node -e '
-              const fs = require("fs");
-              const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-              if (fs.existsSync("index.js")) console.log("index.js");
-              else if (fs.existsSync("index.ts")) console.log("index.ts");
-              else if (fs.existsSync("index.tsx")) console.log("index.tsx");
-              else if (pkg.main) console.log(require.resolve(pkg.main));
-              else console.log(require.resolve("expo/AppEntry.js"));
-            ')" \
-            --bundle-output android/app/src/main/assets/index.android.bundle \
-            --assets-dest android/app/src/main/res
-
-      - name: Configure Gradle for Standalone Execution
-        run: |
-          rm -rf android/app/src/main/res/drawable-*/*.ttf || true
-          rm -rf android/app/src/main/res/raw/*.ttf || true
-          if grep -q "react {" android/app/build.gradle; then
-            sed -i 's/react {/react {\n    debuggableVariants = []/' android/app/build.gradle
-          fi
-
-      - name: Compile APK with Gradle
+      - name: Compile Standalone APK with Gradle
         working-directory: ./android
+        env:
+          NODE_ENV: production
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug -x createBundleDebugJsAndAssets --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
+          ./gradlew assembleRelease --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
 
       - uses: actions/upload-artifact@v4
         with:
           name: saient-s25u-apk
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: android/app/build/outputs/apk/release/*.apk
