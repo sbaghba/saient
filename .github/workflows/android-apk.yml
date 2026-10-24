@@ -34,6 +34,8 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       # `npm ci` is not usable here: this repo's package-lock.json is missing
       # @emnapi/core and @emnapi/runtime, so npm ci exits EUSAGE ("package.json and
